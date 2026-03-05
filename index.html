@@ -2,93 +2,161 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>ARSIP | INSPEKTORAT TANA TORAJA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Arsip | Inspektorat Tana Toraja</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Poppins', sans-serif; }</style>
-</head>
-<body class="bg-slate-100">
 
-    <div id="loginPage" class="fixed inset-0 z-50 flex items-center justify-center bg-blue-900">
-        <div class="bg-white p-10 rounded-3xl shadow-2xl text-center max-w-sm w-full">
-            <h1 class="text-2xl font-bold text-slate-800">E-Arsip</h1>
-            <p class="text-blue-600 font-bold mb-8">INSPEKTORAT TANA TORAJA</p>
-            <button onclick="masuk()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg">MASUK SISTEM</button>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        .gradient-sidebar { background: linear-gradient(180deg, #1e3a8a 0%, #064e3b 100%); }
+    </style>
+</head>
+<body>
+
+    <div id="loginPage" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900 p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-10 text-center">
+            <div class="inline-flex p-4 rounded-2xl bg-blue-50 text-blue-600 mb-4">
+                <i data-lucide="shield-check" class="w-12 h-12"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 font-poppins">E-Arsip</h2>
+            <p class="text-blue-600 font-bold uppercase tracking-wider">Inspektorat Tana Toraja</p>
+            
+            <form id="loginForm" class="space-y-5 mt-8 text-left">
+                <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Email Instansi">
+                <input type="password" id="password" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Password">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95">
+                    Masuk Dashboard
+                </button>
+            </form>
         </div>
     </div>
 
     <div id="mainApp" class="hidden min-h-screen flex">
-        <aside class="w-72 bg-slate-900 text-white p-8 flex-shrink-0">
-            <div class="mb-10">
-                <p class="text-xs text-slate-400 font-bold tracking-widest uppercase mb-1">Aplikasi Digital</p>
-                <h2 class="text-lg font-bold leading-tight">INSPEKTORAT<br>TANA TORAJA</h2>
+        
+        <aside class="w-72 gradient-sidebar text-white flex-shrink-0 flex flex-col">
+            <div class="p-8 flex flex-col gap-2 border-b border-white/10">
+                <div class="bg-orange-500 w-fit p-2 rounded-lg shadow-lg mb-2"><i data-lucide="layers" class="w-6 h-6"></i></div>
+                <span class="text-lg font-bold leading-tight font-poppins uppercase">INSPEKTORAT<br>TANA TORAJA</span>
             </div>
-            <nav class="space-y-4">
-                <div class="flex items-center gap-3 p-4 bg-blue-600 rounded-xl"><i data-lucide="layout-grid"></i> Dashboard</div>
-                <div class="flex items-center gap-3 p-4 text-slate-400"><i data-lucide="file-text"></i> Data Dokumen</div>
+            
+            <nav class="flex-1 px-4 space-y-2 mt-6">
+                <button class="w-full flex items-center gap-4 px-5 py-4 rounded-xl bg-white/10 transition font-medium">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i> Dashboard
+                </button>
+                <button class="w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/10 transition">
+                    <i data-lucide="file-text" class="w-5 h-5 text-emerald-400"></i> Data Arsip
+                </button>
             </nav>
+
+            <div class="p-6">
+                <button onclick="location.reload()" class="w-full py-4 bg-red-500/20 hover:bg-red-500 text-red-100 rounded-2xl transition-all border border-red-500/30 font-bold">
+                    KELUAR
+                </button>
+            </div>
         </aside>
 
-        <main class="flex-1 flex flex-col">
-            <header class="h-24 bg-white border-b px-10 flex items-center justify-between">
-                <h2 class="text-2xl font-bold text-slate-800 uppercase tracking-tight">
-                    E-Arsip Inspektorat Tana Toraja
-                </h2>
-                <div class="bg-emerald-100 text-emerald-700 px-4 py-1 rounded-full text-xs font-bold uppercase">Database Terhubung</div>
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white h-24 flex items-center justify-between px-10 border-b border-slate-200 shadow-sm">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 font-poppins">E-Arsip Inspektorat Tana Toraja</h2>
+                    <p class="text-sm text-slate-500 font-medium">Sistem Manajemen Dokumen Digital</p>
+                </div>
+                <div class="flex items-center gap-4 border-l pl-6">
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-slate-800">Pusat Data</p>
+                        <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase">Online</span>
+                    </div>
+                </div>
             </header>
 
-            <div class="p-10 flex-1">
-                <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-                    <table class="w-full text-left">
-                        <thead class="bg-slate-50 border-b">
-                            <tr>
-                                <th class="p-6 text-sm font-bold text-slate-500 uppercase">Nama Dokumen</th>
-                                <th class="p-6 text-sm font-bold text-slate-500 uppercase">Tanggal</th>
-                                <th class="p-6 text-sm font-bold text-slate-500 uppercase">Kategori</th>
-                                <th class="p-6 text-sm font-bold text-slate-500 uppercase text-center">Aksi</th>
+            <div class="flex-1 overflow-y-auto p-10 bg-slate-50/50">
+                <div class="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50/80 border-b border-slate-100">
+                                <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider">Nama Dokumen</th>
+                                <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider">Tanggal</th>
+                                <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider">Kategori</th>
+                                <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="documentTableBody">
-                            <tr><td colspan="4" class="p-20 text-center text-slate-400 italic">Menarik data dari Spreadsheet...</td></tr>
+                            <tr>
+                                <td colspan="4" class="py-20 text-center text-slate-400 font-medium italic">
+                                    Memuat data dari Spreadsheet...
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            
+            <footer class="p-6 text-center text-slate-400 text-[10px] font-bold uppercase tracking-widest border-t bg-white">
+                PEMERINTAH KABUPATEN TANA TORAJA &copy; 2026
+            </footer>
         </main>
     </div>
 
     <script>
+        // MASUKKAN URL ANDA DI SINI
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywR5hU_FSCBm4_6-o9bEfdN5WcFJViWj33bbUIzs5zCBa8QQcO7mTF1DDJ4DNmIX2V/exec";
+        
+        lucide.createIcons();
 
-        function masuk() {
+        // 1. LOGIN HANDLER
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainApp').classList.remove('hidden');
-            loadData();
-        }
+            loadDataFromSheet(); // Langsung ambil data
+        });
 
-        async function loadData() {
+        // 2. FUNGSI AMBIL DATA REALTIME
+        async function loadDataFromSheet() {
+            const tbody = document.getElementById('documentTableBody');
+            
             try {
                 const response = await fetch(SCRIPT_URL);
                 const data = await response.json();
-                const tbody = document.getElementById('documentTableBody');
-                tbody.innerHTML = '';
                 
+                tbody.innerHTML = ''; // Bersihkan loader
+
+                if(data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="py-20 text-center text-slate-400">Belum ada data di Spreadsheet.</td></tr>`;
+                    return;
+                }
+
                 data.forEach(doc => {
-                    tbody.innerHTML += `
-                        <tr class="border-b hover:bg-slate-50 transition">
-                            <td class="p-6 font-bold text-slate-700">${doc.nama || '-'}</td>
-                            <td class="p-6 text-slate-500">${doc.tanggal || '-'}</td>
-                            <td class="p-6"><span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-xs font-bold">${doc.jenis || '-'}</span></td>
-                            <td class="p-6 text-center"><a href="${doc.link}" target="_blank" class="text-blue-600 font-bold text-sm">LIHAT FILE</a></td>
-                        </tr>`;
+                    const row = document.createElement('tr');
+                    row.className = "border-b border-slate-50 hover:bg-blue-50/50 transition-colors";
+                    row.innerHTML = `
+                        <td class="px-8 py-5 text-sm font-semibold text-slate-700">${doc.nama || 'Tanpa Nama'}</td>
+                        <td class="px-8 py-5 text-sm text-slate-500">${doc.tanggal || '-'}</td>
+                        <td class="px-8 py-5">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-[10px] font-bold uppercase">
+                                ${doc.jenis || 'Umum'}
+                            </span>
+                        </td>
+                        <td class="px-8 py-5 text-center">
+                            <a href="${doc.link}" target="_blank" class="inline-flex items-center gap-2 text-blue-600 font-bold text-xs hover:underline">
+                                <i data-lucide="eye" class="w-4 h-4"></i> LIHAT FILE
+                            </a>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
                 });
-                lucide.createIcons();
-            } catch (e) {
-                console.error("Gagal memuat data");
+                
+                lucide.createIcons(); // Gambar ulang ikon
+
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="4" class="py-20 text-center text-red-500 font-bold italic">Gagal memuat data. Periksa URL Apps Script Anda.</td></tr>`;
+                console.error("Fetch error:", error);
             }
         }
-        lucide.createIcons();
     </script>
 </body>
 </html>
