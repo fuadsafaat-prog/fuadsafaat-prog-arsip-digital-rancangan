@@ -3,338 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Arsip Premium | Sistem Digital Instansi</title>
+    <title>E-Arsip | Inspektorat Tana Toraja</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         .font-poppins { font-family: 'Poppins', sans-serif; }
         .gradient-sidebar { background: linear-gradient(180deg, #1e3a8a 0%, #064e3b 100%); }
-        .glass-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
-        .card-stat { transition: transform 0.2s; }
-        .card-stat:hover { transform: translateY(-5px); }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body>
 
     <div id="loginPage" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900 p-4">
-        <div class="absolute inset-0 opacity-20" style="background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/graphy.png');"></div>
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-10 relative z-10 border border-slate-100">
-            <div class="text-center mb-10">
-                <div class="inline-flex p-4 rounded-2xl bg-blue-50 text-blue-600 mb-4 shadow-sm">
-                    <i data-lucide="shield-check" class="w-12 h-12"></i>
-                </div>
-                <h2 class="text-3xl font-bold text-slate-800 font-poppins">E-Arsip v1.0</h2>
-                <p class="text-slate-500 mt-2">Sistem Manajemen Dokumen Terpadu</p>
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-10 text-center">
+            <div class="inline-flex p-4 rounded-2xl bg-blue-50 text-blue-600 mb-4">
+                <i data-lucide="shield-check" class="w-12 h-12"></i>
             </div>
+            <h2 class="text-2xl font-bold text-slate-800 font-poppins">E-Arsip</h2>
+            <p class="text-blue-600 font-bold uppercase tracking-wider">Inspektorat Tana Toraja</p>
             
-            <form id="loginForm" class="space-y-5">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">Email Instansi</label>
-                    <div class="relative">
-                        <i data-lucide="mail" class="absolute left-3 top-3.5 w-5 h-5 text-slate-400"></i>
-                        <input type="email" id="email" required class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="admin@instansi.go.id">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
-                    <div class="relative">
-                        <i data-lucide="lock" class="absolute left-3 top-3.5 w-5 h-5 text-slate-400"></i>
-                        <input type="password" id="password" required class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="••••••••">
-                    </div>
-                </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-95">
-                    Masuk ke Dashboard
+            <form id="loginForm" class="space-y-5 mt-8 text-left">
+                <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Email Instansi">
+                <input type="password" id="password" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Password">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95">
+                    Masuk Dashboard
                 </button>
             </form>
-            <div class="mt-8 pt-6 border-t border-slate-100 text-center">
-                <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Instansi Pemerintah Digital &copy; 2026</p>
-            </div>
         </div>
     </div>
 
     <div id="mainApp" class="hidden min-h-screen flex">
         
-        <aside class="w-72 gradient-sidebar text-white flex-shrink-0 shadow-2xl flex flex-col">
-            <div class="p-8 flex items-center gap-4">
-                <div class="bg-orange-500 p-2.5 rounded-xl shadow-lg"><i data-lucide="layers" class="w-7 h-7"></i></div>
-                <span class="text-2xl font-bold tracking-tight font-poppins">ARSIP.ID</span>
+        <aside class="w-72 gradient-sidebar text-white flex-shrink-0 flex flex-col">
+            <div class="p-8 flex flex-col gap-2 border-b border-white/10">
+                <div class="bg-orange-500 w-fit p-2 rounded-lg shadow-lg mb-2"><i data-lucide="layers" class="w-6 h-6"></i></div>
+                <span class="text-lg font-bold leading-tight font-poppins uppercase">INSPEKTORAT<br>TANA TORAJA</span>
             </div>
             
-            <nav class="flex-1 px-4 space-y-2 mt-4">
-                <button onclick="switchTab('dashboard')" class="nav-link w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/10 transition font-medium">
+            <nav class="flex-1 px-4 space-y-2 mt-6">
+                <button class="w-full flex items-center gap-4 px-5 py-4 rounded-xl bg-white/10 transition font-medium">
                     <i data-lucide="layout-grid" class="w-5 h-5"></i> Dashboard
                 </button>
-                <div class="pt-6 pb-2 px-5 text-[10px] font-bold text-white/40 uppercase tracking-[2px]">Kategori Dokumen</div>
-                <button onclick="switchTab('laporan')" class="nav-link w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/10 transition">
-                    <i data-lucide="pie-chart" class="w-5 h-5 text-emerald-400"></i> Laporan
-                </button>
-                <button onclick="switchTab('surat')" class="nav-link w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/10 transition">
-                    <i data-lucide="mail-plus" class="w-5 h-5 text-blue-400"></i> Surat Resmi
-                </button>
-                <button onclick="switchTab('izin')" class="nav-link w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/10 transition">
-                    <i data-lucide="user-check" class="w-5 h-5 text-orange-400"></i> Rekap Izin
+                <button class="w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/10 transition">
+                    <i data-lucide="file-text" class="w-5 h-5 text-emerald-400"></i> Data Arsip
                 </button>
             </nav>
 
             <div class="p-6">
-                <button onclick="location.reload()" class="w-full flex items-center justify-center gap-3 py-4 bg-red-500/20 hover:bg-red-500 text-red-100 rounded-2xl transition-all border border-red-500/30">
-                    <i data-lucide="power" class="w-5 h-5"></i> <span class="font-bold">Logout</span>
+                <button onclick="location.reload()" class="w-full py-4 bg-red-500/20 hover:bg-red-500 text-red-100 rounded-2xl transition-all border border-red-500/30 font-bold">
+                    KELUAR
                 </button>
             </div>
         </aside>
 
         <main class="flex-1 flex flex-col overflow-hidden">
-            <header class="glass-header h-24 flex items-center justify-between px-10 border-b border-slate-200 sticky top-0 z-40">
+            <header class="bg-white h-24 flex items-center justify-between px-10 border-b border-slate-200 shadow-sm">
                 <div>
-                    <h2 id="viewTitle" class="text-2xl font-bold text-slate-800 font-poppins">Ringkasan Statistik</h2>
-                    <p class="text-sm text-slate-500">Selamat datang kembali, Administrator</p>
+                    <h2 class="text-2xl font-bold text-slate-800 font-poppins">E-Arsip Inspektorat Tana Toraja</h2>
+                    <p class="text-sm text-slate-500 font-medium">Sistem Manajemen Dokumen Digital</p>
                 </div>
-                <div class="flex items-center gap-6">
-                    <div class="relative hidden lg:block">
-                        <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-slate-400"></i>
-                        <input type="text" onkeyup="searchTable(this)" placeholder="Cari nomor surat atau dokumen..." class="bg-slate-100 w-80 pl-12 pr-4 py-3 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none text-sm border-transparent focus:bg-white transition-all">
-                    </div>
-                    <div class="flex items-center gap-4 pl-6 border-l border-slate-200">
-                        <div class="text-right">
-                            <p class="text-sm font-bold text-slate-800">Pusat Data</p>
-                            <span class="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase">
-                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Terhubung
-                            </span>
-                        </div>
+                <div class="flex items-center gap-4 border-l pl-6">
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-slate-800">Pusat Data</p>
+                        <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase">Online</span>
                     </div>
                 </div>
             </header>
 
             <div class="flex-1 overflow-y-auto p-10 bg-slate-50/50">
-                
-                <div id="dashboardView">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
-                        <div class="card-stat bg-white p-7 rounded-[2rem] shadow-sm border border-slate-100">
-                            <div class="bg-blue-50 text-blue-600 w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-inner"><i data-lucide="folder-open"></i></div>
-                            <h3 class="text-slate-500 text-sm font-medium uppercase tracking-wider">Total Arsip</h3>
-                            <p class="text-3xl font-bold text-slate-800 mt-1">1.284</p>
-                        </div>
-                        <div class="card-stat bg-white p-7 rounded-[2rem] shadow-sm border border-slate-100">
-                            <div class="bg-emerald-50 text-emerald-600 w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-inner"><i data-lucide="file-text"></i></div>
-                            <h3 class="text-slate-500 text-sm font-medium uppercase tracking-wider">Laporan</h3>
-                            <p class="text-3xl font-bold text-slate-800 mt-1">452</p>
-                        </div>
-                        <div class="card-stat bg-white p-7 rounded-[2rem] shadow-sm border border-slate-100">
-                            <div class="bg-orange-50 text-orange-600 w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-inner"><i data-lucide="send"></i></div>
-                            <h3 class="text-slate-500 text-sm font-medium uppercase tracking-wider">Surat Keluar</h3>
-                            <p class="text-3xl font-bold text-slate-800 mt-1">312</p>
-                        </div>
-                        <div class="card-stat bg-white p-7 rounded-[2rem] shadow-sm border border-slate-100">
-                            <div class="bg-purple-50 text-purple-600 w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-inner"><i data-lucide="clock"></i></div>
-                            <h3 class="text-slate-500 text-sm font-medium uppercase tracking-wider">Menunggu</h3>
-                            <p class="text-3xl font-bold text-slate-800 mt-1">18</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-2 bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
-                            <h4 class="font-bold text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="activity" class="text-blue-500"></i> Tren Unggah Dokumen</h4>
-                            <div class="h-64"><canvas id="statChart"></canvas></div>
-                        </div>
-                        <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
-                            <h4 class="font-bold text-slate-800 mb-6">Status Penyimpanan</h4>
-                            <div class="space-y-6">
-                                <div>
-                                    <div class="flex justify-between text-xs font-bold mb-2"><span>GOOGLE DRIVE</span><span>75%</span></div>
-                                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden"><div class="bg-blue-600 h-full w-[75%]"></div></div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-xs font-bold mb-2"><span>DATABASE SPREADSHEET</span><span>12%</span></div>
-                                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden"><div class="bg-emerald-500 h-full w-[12%]"></div></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50/80 border-b border-slate-100">
+                                <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider">Nama Dokumen</th>
+                                <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider">Tanggal</th>
+                                <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider">Kategori</th>
+                                <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="documentTableBody">
+                            <tr>
+                                <td colspan="4" class="py-20 text-center text-slate-400 font-medium italic">
+                                    Memuat data dari Spreadsheet...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <div id="tableView" class="hidden">
-                    <div class="flex justify-between items-center mb-8">
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-800">Data Arsip Real-time</h3>
-                            <p class="text-sm text-slate-500">Daftar ini tersinkronisasi langsung dengan Google Sheets</p>
-                        </div>
-                        <button onclick="loadDataFromSheet()" class="flex items-center gap-2 bg-white border border-slate-200 px-5 py-2.5 rounded-xl hover:bg-slate-50 transition font-semibold text-sm shadow-sm">
-                            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Segarkan Data
-                        </button>
-                    </div>
-                    <div class="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-slate-50/80 border-b border-slate-100">
-                                    <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider">Nama Dokumen</th>
-                                    <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider">Tanggal Terbit</th>
-                                    <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider">Kategori</th>
-                                    <th class="px-8 py-5 text-sm font-bold text-slate-600 uppercase tracking-wider text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="documentTableBody">
-                                </tbody>
-                        </table>
-                        <div id="loader" class="hidden py-20 text-center">
-                            <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent mb-4"></div>
-                            <p class="text-slate-500 font-medium">Mengunduh data dari server...</p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
             
-            <footer class="p-6 text-center text-slate-400 text-xs font-medium border-t border-slate-100 bg-white">
-                Sistem Informasi Arsip Digital v1.0.0 &bull; Dikembangkan untuk Efisiensi Birokrasi &copy; 2026
+            <footer class="p-6 text-center text-slate-400 text-[10px] font-bold uppercase tracking-widest border-t bg-white">
+                PEMERINTAH KABUPATEN TANA TORAJA &copy; 2026
             </footer>
         </main>
     </div>
 
     <script>
-        // CONFIGURATION
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwFkYQggfXERFHb98DSt0AXsfv7DQdoe2Lhry7JtTkwXyadEmqT4tO45QRgkveg9yWZ/exec";
+        // MASUKKAN URL ANDA DI SINI
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywR5hU_FSCBm4_6-o9bEfdN5WcFJViWj33bbUIzs5zCBa8QQcO7mTF1DDJ4DNmIX2V/exec";
         
-        // INIT ICONS
         lucide.createIcons();
 
         // 1. LOGIN HANDLER
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            // Simple animation transition
-            const btn = e.target.querySelector('button');
-            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto"></i>';
-            lucide.createIcons();
-
-            setTimeout(() => {
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('mainApp').classList.remove('hidden');
-                initDashboard();
-                loadDataFromSheet(); // Load data initially
-            }, 800);
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('mainApp').classList.remove('hidden');
+            loadDataFromSheet(); // Langsung ambil data
         });
 
-        // 2. TAB SWITCHER
-        function switchTab(view) {
-            const dash = document.getElementById('dashboardView');
-            const table = document.getElementById('tableView');
-            const title = document.getElementById('viewTitle');
-
-            if(view === 'dashboard') {
-                dash.classList.remove('hidden');
-                table.classList.add('hidden');
-                title.innerText = "Ringkasan Statistik";
-            } else {
-                dash.classList.add('hidden');
-                table.classList.remove('hidden');
-                title.innerText = "Manajemen Dokumen";
-                // Optionally filter table by category here
-            }
-        }
-
-        // 3. LOAD DATA FROM GOOGLE SHEETS
+        // 2. FUNGSI AMBIL DATA REALTIME
         async function loadDataFromSheet() {
             const tbody = document.getElementById('documentTableBody');
-            const loader = document.getElementById('loader');
             
-            tbody.innerHTML = '';
-            loader.classList.remove('hidden');
-
             try {
                 const response = await fetch(SCRIPT_URL);
                 const data = await response.json();
                 
-                loader.classList.add('hidden');
-                
+                tbody.innerHTML = ''; // Bersihkan loader
+
                 if(data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" class="py-20 text-center text-slate-400 font-medium">Tidak ada dokumen ditemukan.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="4" class="py-20 text-center text-slate-400">Belum ada data di Spreadsheet.</td></tr>`;
                     return;
                 }
 
                 data.forEach(doc => {
                     const row = document.createElement('tr');
-                    row.className = "border-b border-slate-50 hover:bg-blue-50/40 transition-colors group";
+                    row.className = "border-b border-slate-50 hover:bg-blue-50/50 transition-colors";
                     row.innerHTML = `
                         <td class="px-8 py-5 text-sm font-semibold text-slate-700">${doc.nama || 'Tanpa Nama'}</td>
-                        <td class="px-8 py-5 text-sm text-slate-500 italic">${doc.tanggal || '-'}</td>
+                        <td class="px-8 py-5 text-sm text-slate-500">${doc.tanggal || '-'}</td>
                         <td class="px-8 py-5">
-                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-[11px] font-bold uppercase tracking-tight group-hover:bg-blue-100 group-hover:text-blue-600 transition">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-[10px] font-bold uppercase">
                                 ${doc.jenis || 'Umum'}
                             </span>
                         </td>
-                        <td class="px-8 py-5">
-                            <div class="flex justify-center gap-2">
-                                <a href="${doc.link}" target="_blank" class="p-2.5 bg-white border border-slate-200 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white hover:border-blue-600 transition shadow-sm">
-                                    <i data-lucide="external-link" class="w-4 h-4"></i>
-                                </a>
-                                <button onclick="window.open('${doc.link}')" class="p-2.5 bg-white border border-slate-200 text-emerald-600 rounded-xl hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition shadow-sm">
-                                    <i data-lucide="download-cloud" class="w-4 h-4"></i>
-                                </button>
-                            </div>
+                        <td class="px-8 py-5 text-center">
+                            <a href="${doc.link}" target="_blank" class="inline-flex items-center gap-2 text-blue-600 font-bold text-xs hover:underline">
+                                <i data-lucide="eye" class="w-4 h-4"></i> LIHAT FILE
+                            </a>
                         </td>
                     `;
                     tbody.appendChild(row);
                 });
-                lucide.createIcons();
+                
+                lucide.createIcons(); // Gambar ulang ikon
 
             } catch (error) {
-                loader.classList.add('hidden');
-                tbody.innerHTML = `<tr><td colspan="4" class="py-20 text-center text-red-500 font-bold italic">Gagal memuat data. Periksa koneksi atau URL Apps Script Anda.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="py-20 text-center text-red-500 font-bold italic">Gagal memuat data. Periksa URL Apps Script Anda.</td></tr>`;
                 console.error("Fetch error:", error);
             }
-        }
-
-        // 4. SEARCH FUNCTIONALITY
-        function searchTable(input) {
-            const filter = input.value.toUpperCase();
-            const rows = document.getElementById('documentTableBody').getElementsByTagName('tr');
-            
-            for (let i = 0; i < rows.length; i++) {
-                const td = rows[i].getElementsByTagName('td')[0];
-                if (td) {
-                    const txtValue = td.textContent || td.innerText;
-                    rows[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
-                }
-            }
-        }
-
-        // 5. CHART INITIALIZATION
-        function initDashboard() {
-            const ctx = document.getElementById('statChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-                    datasets: [{
-                        label: 'Dokumen Masuk',
-                        data: [45, 82, 60, 110, 85, 130],
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#3b82f6'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, grid: { color: '#f1f5f9' }, border: { display: false } },
-                        x: { grid: { display: false }, border: { display: false } }
-                    }
-                }
-            });
         }
     </script>
 </body>
