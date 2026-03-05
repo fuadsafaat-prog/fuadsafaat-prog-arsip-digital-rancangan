@@ -2,127 +2,318 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>E-Arsip | Inspektorat Tana Toraja</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Arsip Inspektorat Tana Toraja</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Poppins', sans-serif; }</style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:ital,wght@1,700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f1f5f9; }
+        .sidebar-gradient { background: linear-gradient(180deg, #1e3a8a 0%, #0f172a 100%); }
+        .nav-active { background: rgba(255,255,255,0.1); border-left: 4px solid #f97316; }
+        .glass-login { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); }
+        tr:nth-child(even) { background-color: #f8fafc; }
+    </style>
 </head>
-<body class="bg-slate-100">
+<body class="overflow-hidden text-slate-900">
 
-    <div id="loginPage" class="fixed inset-0 z-[999] flex items-center justify-center bg-slate-900 px-4">
-        <div class="bg-white p-10 rounded-3xl shadow-2xl text-center max-w-sm w-full">
-            <h1 class="text-2xl font-bold text-slate-800">E-Arsip</h1>
-            <p class="text-blue-600 font-bold mb-8 uppercase text-sm">Inspektorat Tana Toraja</p>
-            
-            <form id="loginForm" class="text-left space-y-4">
+    <div id="loginPage" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900">
+        <div class="glass-login p-10 rounded-[2.5rem] shadow-2xl w-full max-w-md text-center">
+            <h1 class="text-4xl font-poppins italic text-blue-900 mb-2">E-Arsip</h1>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mb-8">Inspektorat Tana Toraja</p>
+            <form onsubmit="loginUser(event)" class="space-y-4 text-left">
                 <div>
-                    <label class="text-xs font-bold text-slate-500 uppercase">Email Instansi</label>
-                    <input type="email" id="userEmail" required class="w-full p-3 bg-slate-50 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1">Email Instansi</label>
+                    <input type="email" id="email" placeholder="admin@tanatoraja.go.id" required class="w-full px-5 py-4 rounded-2xl border bg-slate-50 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                 </div>
                 <div>
-                    <label class="text-xs font-bold text-slate-500 uppercase">Password</label>
-                    <input type="password" id="userPass" required class="w-full p-3 bg-slate-50 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required class="w-full px-5 py-4 rounded-2xl border bg-slate-50 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                 </div>
-                <button type="submit" id="loginBtn" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition">
-                    VERIFIKASI MASUK
-                </button>
+                <button id="loginBtn" class="w-full bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-blue-800 active:scale-95 transition-all mt-4 tracking-widest text-xs">MASUK SISTEM</button>
             </form>
-            <p id="errorMsg" class="mt-4 text-red-500 text-xs font-bold hidden">Email atau Password salah!</p>
+            <p id="loginError" class="hidden text-red-500 text-[10px] font-bold mt-4 italic">Akun tidak terdaftar di Spreadsheet!</p>
         </div>
     </div>
 
-    <div id="mainApp" class="hidden min-h-screen flex">
-        <aside class="w-72 bg-slate-900 text-white p-8 flex-shrink-0 flex flex-col">
-            <h2 class="text-lg font-bold border-b border-slate-700 pb-4 mb-6 uppercase">Inspektorat<br>Tana Toraja</h2>
-            <nav class="flex-1 space-y-2">
-                <div class="flex items-center gap-3 p-4 bg-blue-600 rounded-xl text-sm font-bold"><i data-lucide="layout-grid"></i> Dashboard</div>
+    <div id="mainApp" class="hidden flex h-screen w-full">
+        <aside class="w-72 sidebar-gradient text-white flex flex-col shrink-0">
+            <div class="p-8 border-b border-white/10 flex items-center gap-3">
+                <div class="bg-orange-500 p-2 rounded-lg shadow-lg"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
+                <span class="font-bold text-sm tracking-tighter uppercase leading-tight">Inspektorat<br>Tana Toraja</span>
+            </div>
+            <nav class="flex-1 p-4 space-y-2 mt-4 overflow-y-auto">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="tab-link nav-active w-full flex items-center gap-4 px-5 py-4 rounded-xl transition-all">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i> <span class="text-sm font-medium">Dashboard</span>
+                </button>
+                <div class="pt-8 pb-2 px-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Arsip Laporan</div>
+                <button onclick="switchTab('Laporan Hasil Opname')" class="tab-link w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/5 text-xs transition-all">LH Opname</button>
+                <button onclick="switchTab('Laporan Hasil Audit')" class="tab-link w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/5 text-xs transition-all">LH Audit</button>
+                <button onclick="switchTab('Laporan Hasil Reviu')" class="tab-link w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/5 text-xs transition-all">LH Reviu</button>
+                <button onclick="switchTab('Laporan Hasil Pemeriksaan Lainnya')" class="tab-link w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/5 text-xs text-left leading-tight transition-all">LH Pemeriksaan Lainnya</button>
             </nav>
-            <button onclick="location.reload()" class="w-full py-3 bg-red-600/20 text-red-500 rounded-xl font-bold border border-red-600/30">KELUAR</button>
+            <div class="p-6">
+                <button onclick="location.reload()" class="w-full py-3 bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all">Logout</button>
+            </div>
         </aside>
 
         <main class="flex-1 flex flex-col">
-            <header class="h-20 bg-white border-b px-10 flex items-center justify-between">
-                <h2 class="text-xl font-bold text-slate-800">E-Arsip Inspektorat Tana Toraja</h2>
-                <div class="flex items-center gap-2"><span id="displayName" class="text-sm font-bold text-slate-600">User</span></div>
+            <header class="h-24 bg-white border-b flex items-center justify-between px-10 shrink-0">
+                <div>
+                    <h2 id="viewTitle" class="text-xl font-bold text-slate-800 font-poppins italic">Dashboard Utama</h2>
+                    <p id="welcomeUser" class="text-[10px] text-blue-600 font-bold uppercase tracking-widest mt-1 italic"></p>
+                </div>
+                <button id="uploadBtn" onclick="openUpload()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-bold text-xs flex items-center gap-2 shadow-xl shadow-emerald-100 active:scale-95 transition-all">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> <span id="uploadBtnText">UPLOAD LH</span>
+                </button>
             </header>
 
-            <div class="p-8">
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                    <table class="w-full text-left">
-                        <thead class="bg-slate-50 border-b">
-                            <tr>
-                                <th class="p-5 text-xs font-bold uppercase text-slate-500">Nama Dokumen</th>
-                                <th class="p-5 text-xs font-bold uppercase text-slate-500">Tanggal</th>
-                                <th class="p-5 text-xs font-bold uppercase text-slate-500">Kategori</th>
-                                <th class="p-5 text-xs font-bold uppercase text-slate-500">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="documentTableBody"></tbody>
-                    </table>
+            <div class="flex-1 overflow-y-auto p-10">
+                <div id="view-dashboard" class="space-y-8 animate-in fade-in duration-500">
+                    <div class="grid grid-cols-4 gap-6">
+                        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100"><h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">LH Opname</h4><p id="st-opname" class="text-3xl font-bold mt-1 text-slate-800">0</p></div>
+                        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100"><h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">LH Audit</h4><p id="st-audit" class="text-3xl font-bold mt-1 text-slate-800">0</p></div>
+                        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100"><h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">LH Reviu</h4><p id="st-reviu" class="text-3xl font-bold mt-1 text-slate-800">0</p></div>
+                        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100"><h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Lainnya</h4><p id="st-lain" class="text-3xl font-bold mt-1 text-slate-800">0</p></div>
+                    </div>
+                    <div class="bg-white p-10 rounded-[2.5rem] border shadow-sm h-[400px]"><canvas id="mainChart"></canvas></div>
+                </div>
+
+                <div id="view-table" class="hidden animate-in slide-in-from-bottom-4 duration-500">
+                    <div class="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 border-b border-slate-200">
+                                <tr>
+                                    <th class="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Nama Berkas PDF</th>
+                                    <th class="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Tanggal Unggah</th>
+                                    <th class="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="documentBody" class="text-sm divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
+    <div id="uploadModal" class="hidden fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-md p-10 rounded-[2.5rem] shadow-2xl animate-in zoom-in-95 duration-300">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-xl font-bold text-slate-800 font-poppins italic">Unggah LH Baru</h3>
+                <button onclick="closeUpload()" class="p-2 hover:bg-slate-100 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="uploadForm" class="space-y-6">
+                <div class="p-10 border-2 border-dashed border-slate-200 rounded-[2rem] bg-slate-50 text-center relative hover:border-blue-400 transition-all group">
+                    <input type="file" id="upFile" accept="application/pdf" required class="absolute inset-0 opacity-0 cursor-pointer">
+                    <div id="fileInfo">
+                        <i data-lucide="file-up" class="w-12 h-12 text-blue-500 mx-auto mb-4 group-hover:scale-110 transition-transform"></i>
+                        <p class="text-xs font-bold text-slate-600">Klik atau seret PDF ke sini</p>
+                        <p class="text-[9px] text-slate-400 uppercase mt-1">Maksimal 50 MB</p>
+                    </div>
+                </div>
+                <button id="submitBtn" class="w-full bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-blue-800 active:scale-95 transition-all text-xs tracking-widest">SIMPAN KE DRIVE & WEBSITE</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGkYy9cy5FH5sk8l849ytvYQKojh1ulDueVil6AY94vHylCi2boGjAtzinMX5RGFfr/exec";
+        // URL API Milik Pak Fuad
+        const API_URL = "https://script.google.com/macros/s/AKfycbxiJ9IiL5DU1kN_K_cNRaY1zXGmdlLeTMSczP0nBPIRMBncbFfplkZXzRbFNCZ0FRjQ/exec";
+        
+        let masterData = [];
+        let activeCategory = 'dashboard';
+        let userRole = "";
 
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        // LOGIN SYSTEM
+        async function loginUser(e) {
             e.preventDefault();
-            const email = document.getElementById('userEmail').value;
-            const pass = document.getElementById('userPass').value;
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
             const btn = document.getElementById('loginBtn');
-            const error = document.getElementById('errorMsg');
+            const errorMsg = document.getElementById('loginError');
 
-            btn.innerText = "Memverifikasi...";
-            btn.disabled = true;
+            btn.innerText = "MENCOCOKKAN DATA..."; btn.disabled = true;
+            errorMsg.classList.add('hidden');
 
             try {
-                const response = await fetch(`${SCRIPT_URL}?action=login&email=${email}&pass=${pass}`);
-                const result = await response.json();
-
-                if (result.status === "success") {
+                const res = await fetch(`${API_URL}?action=login&email=${email}&pass=${pass}`);
+                const data = await res.json();
+                
+                if(data.status === "success") {
+                    userRole = data.role.toLowerCase();
                     document.getElementById('loginPage').classList.add('hidden');
                     document.getElementById('mainApp').classList.remove('hidden');
-                    document.getElementById('displayName').innerText = result.user;
-                    loadData();
+                    document.getElementById('welcomeUser').innerText = "Halo, " + data.nama + " (" + data.role + ")";
+                    fetchData();
                 } else {
-                    error.classList.remove('hidden');
-                    btn.innerText = "VERIFIKASI MASUK";
-                    btn.disabled = false;
+                    errorMsg.classList.remove('hidden');
+                    btn.innerText = "MASUK SISTEM"; btn.disabled = false;
                 }
-            } catch (err) {
-                alert("Gagal terhubung ke server.");
-                btn.disabled = false;
-            }
-        });
-
-        async function loadData() {
-            const tbody = document.getElementById('documentTableBody');
-            tbody.innerHTML = '<tr><td colspan="4" class="p-10 text-center">Memuat data arsip...</td></tr>';
-            
-            try {
-                const res = await fetch(SCRIPT_URL);
-                const data = await res.json();
-                tbody.innerHTML = '';
-                
-                data.forEach(doc => {
-                    tbody.innerHTML += `
-                        <tr class="border-b hover:bg-slate-50 transition">
-                            <td class="p-5 font-bold text-slate-700">${doc.nama || '-'}</td>
-                            <td class="p-5 text-slate-500">${doc.tanggal || '-'}</td>
-                            <td class="p-5 text-blue-600 text-xs font-bold uppercase">${doc.jenis || '-'}</td>
-                            <td class="p-5"><a href="${doc.link}" target="_blank" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-xs font-bold">BUKA</a></td>
-                        </tr>`;
-                });
-                lucide.createIcons();
-            } catch (e) {
-                console.error("Gagal ambil data");
+            } catch(err) {
+                alert("Gagal koneksi ke Apps Script. Pastikan Deploy sudah benar.");
+                btn.innerText = "MASUK SISTEM"; btn.disabled = false;
             }
         }
+
+        // AMBIL DATA LAPORAN
+        async function fetchData() {
+            try {
+                const res = await fetch(API_URL);
+                masterData = await res.json();
+                updateStats(); 
+                initChart();
+                if(activeCategory !== 'dashboard') renderTable(activeCategory);
+            } catch(e) { console.error("Fetch error"); }
+        }
+
+        function updateStats() {
+            const getCount = (k) => masterData.filter(d => d.jenis.toLowerCase().includes(k.toLowerCase())).length;
+            document.getElementById('st-opname').innerText = getCount('Opname');
+            document.getElementById('st-audit').innerText = getCount('Audit');
+            document.getElementById('st-reviu').innerText = getCount('Reviu');
+            document.getElementById('st-lain').innerText = getCount('Lainnya');
+        }
+
+        // NAVIGASI TAB & TOMBOL DINAMIS
+        function switchTab(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('nav-active'));
+            
+            // Highlight sidebar
+            if(cat === 'dashboard') {
+                document.getElementById('nav-dashboard').classList.add('nav-active');
+            } else {
+                event.currentTarget.classList.add('nav-active');
+            }
+
+            const upBtn = document.getElementById('uploadBtn');
+            const title = document.getElementById('viewTitle');
+
+            if(cat === 'dashboard') {
+                upBtn.classList.add('hidden');
+                title.innerText = "Dashboard Utama";
+                document.getElementById('view-dashboard').classList.remove('hidden');
+                document.getElementById('view-table').classList.add('hidden');
+            } else {
+                upBtn.classList.remove('hidden');
+                document.getElementById('uploadBtnText').innerText = "UPLOAD " + cat.toUpperCase();
+                title.innerText = cat;
+                document.getElementById('view-dashboard').classList.add('hidden');
+                document.getElementById('view-table').classList.remove('hidden');
+                renderTable(cat);
+            }
+        }
+
+        // TAMPILKAN TABEL
+        function renderTable(cat) {
+            const tbody = document.getElementById('documentBody');
+            tbody.innerHTML = '';
+            const filtered = masterData.filter(d => d.jenis.trim() === cat.trim());
+            
+            if(filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="px-10 py-10 text-center text-slate-400 italic">Belum ada dokumen di kategori ini.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(doc => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-blue-50/50 transition-all group">
+                        <td class="px-10 py-6 font-bold text-slate-700 text-xs uppercase tracking-tighter">${doc.nama}</td>
+                        <td class="px-10 py-6 text-center text-slate-400 text-[11px] font-medium">${doc.tanggal}</td>
+                        <td class="px-10 py-6 text-center">
+                            <a href="${doc.link}" target="_blank" class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-5 py-2.5 rounded-xl font-bold text-[10px] hover:bg-blue-700 hover:text-white transition-all shadow-sm">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5"></i> BUKA FILE PDF
+                            </a>
+                        </td>
+                    </tr>`;
+            });
+            lucide.createIcons();
+        }
+
+        function openUpload() { document.getElementById('uploadModal').classList.remove('hidden'); }
+        function closeUpload() { 
+            document.getElementById('uploadModal').classList.add('hidden');
+            document.getElementById('uploadForm').reset();
+            document.getElementById('fileInfo').innerHTML = `<i data-lucide="file-up" class="w-12 h-12 text-blue-500 mx-auto mb-4"></i><p class="text-xs font-bold text-slate-600">Pilih Berkas PDF</p>`;
+            lucide.createIcons();
+        }
+
+        document.getElementById('upFile').onchange = function() {
+            if(this.files[0]) {
+                const name = this.files[0].name;
+                document.getElementById('fileInfo').innerHTML = `<i data-lucide="file-check" class="w-12 h-12 text-emerald-500 mx-auto mb-4"></i><p class="text-xs font-bold text-emerald-600">${name}</p>`;
+                lucide.createIcons();
+            }
+        }
+
+        // PROSES UPLOAD OTOMATIS
+        document.getElementById('uploadForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const file = document.getElementById('upFile').files[0];
+            
+            btn.innerText = "PROSES MENGUNGGAH KE DRIVE..."; btn.disabled = true;
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async function() {
+                const payload = {
+                    fileName: file.name,
+                    category: activeCategory, // OTOMATIS sesuai tab yang dibuka
+                    fileBase64: reader.result.split(',')[1]
+                };
+
+                try {
+                    const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+                    const r = await res.json();
+                    if(r.status === "success") { 
+                        alert("Berhasil mengunggah dokumen ke kategori " + activeCategory);
+                        closeUpload(); 
+                        fetchData(); 
+                    } else { alert("Error: " + r.message); }
+                } catch(err) { alert("Gagal koneksi ke Server."); }
+                finally { btn.innerText = "SIMPAN KE DRIVE & WEBSITE"; btn.disabled = false; }
+            };
+        };
+
+        // GRAFIK DASHBOARD
+        let myChart = null;
+        function initChart() {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            if(myChart) myChart.destroy();
+            
+            const dataCounts = [
+                masterData.filter(d => d.jenis.includes('Opname')).length,
+                masterData.filter(d => d.jenis.includes('Audit')).length,
+                masterData.filter(d => d.jenis.includes('Reviu')).length,
+                masterData.filter(d => d.jenis.includes('Lainnya')).length
+            ];
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Opname', 'Audit', 'Reviu', 'Pemeriksaan Lainnya'],
+                    datasets: [{
+                        label: 'Jumlah Dokumen',
+                        data: dataCounts,
+                        backgroundColor: ['#10b981', '#1e3a8a', '#f59e0b', '#8b5cf6'],
+                        borderRadius: 12,
+                        barThickness: 40
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } }
+                }
+            });
+        }
+
+        // Start Icons
         lucide.createIcons();
     </script>
 </body>
 </html>
-
